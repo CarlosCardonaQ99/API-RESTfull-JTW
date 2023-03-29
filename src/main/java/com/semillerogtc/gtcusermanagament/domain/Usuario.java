@@ -17,6 +17,8 @@ public class Usuario {
     private String id;
     @NotEmpty(message = "El nombre es obligatorio")
     private String name;
+    @NotEmpty(message = "La contraseña es obligatoria")
+    private String password;
     @Convert(converter = EmailAttributeConverter.class)
     private Email email;
     private Integer edad;

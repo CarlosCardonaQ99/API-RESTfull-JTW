@@ -2,41 +2,28 @@ package com.semillerogtc.gtcusermanagament.aplication.services;
 
 
 import com.semillerogtc.gtcusermanagament.domain.*;
-import com.semillerogtc.gtcusermanagament.domain.components.PasswordEncoderService;
 import org.springframework.stereotype.Service;
-import com.semillerogtc.gtcusermanagament.domain.components.UsersValidation;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
 public class UsersService {
-    UsersValidation _usersValidation;
+
     UsuariosRepositorio usuariosRepositorio;
-    PasswordEncoderService _passwordEncoderService;
+
 
     UsersService(
-            UsersValidation usersValidation,
-            UsuariosRepositorio usuariosRepositorio,
-            PasswordEncoderService passwordEncoderService) {
+            UsuariosRepositorio usuariosRepositorio) {
         this.usuariosRepositorio = usuariosRepositorio;
-        _usersValidation = usersValidation;
-        this._passwordEncoderService = passwordEncoderService;
     }
 
     public Usuario registrarUsuario(UsuarioNuevoDto usuarioNuevoDto) {
-        boolean resultado = _usersValidation.execute(usuarioNuevoDto);
         var pass = this.generarPassword();
-        var passEncriptado1 = this._passwordEncoderService.encode(pass);
-        var passEncriptado2 = this._passwordEncoderService.encode("otro");
-        var esPasswordIgual = this._passwordEncoderService.validarPassword(pass, passEncriptado1);
-        var esPassword2Igual = this._passwordEncoderService.validarPassword(pass, passEncriptado2);
-        System.out.println(esPasswordIgual);
-
         Usuario usuarioNuevo = new Usuario();
         usuarioNuevo.setName(usuarioNuevoDto.nombre);
         usuarioNuevo.setEmail(new Email(usuarioNuevoDto.email));
+        usuarioNuevo.setPassword(usuarioNuevoDto.password);
         usuarioNuevo.setEdad(usuarioNuevoDto.edad);
 
         UsuarioTelefono usuarioTelefono = new UsuarioTelefono();
@@ -60,5 +47,13 @@ public class UsersService {
 
     public Usuario consultarUsuarioXEmail(String email) {
         return this.usuariosRepositorio.findByEmail(new Email(email));
+    }
+
+    public void actualizarUsuario(String userId, UsuarioNuevoDto usuarioNuevoDto) {
+        Usuario usuario1 = this.usuariosRepositorio.findById(userId).orElseThrow(
+                () -> new IllegalStateException("Usuario no encotrado"));
+        usuario1.setEmail(new Email(usuarioNuevoDto.email));
+        usuario1.setPassword(usuarioNuevoDto.password);
+        usuariosRepositorio.save(usuario1);
     }
 }
