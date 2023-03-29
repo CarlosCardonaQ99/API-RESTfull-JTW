@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -26,4 +27,9 @@ public class Usuario {
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     Set<UsuarioTelefono> telefonos;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"))
+    private Set<Rol> roles = new HashSet<>();
 }
