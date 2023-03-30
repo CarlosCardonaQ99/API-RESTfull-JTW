@@ -20,14 +20,14 @@ public class UsersController {
     UsersService _user;
 
     EnvironmentService _environmentService1;
-   // JWtManagerService jWtManagerService;
+    // JWtManagerService jWtManagerService;
 
     public final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
-   /* UsersController(JWtManagerService jWtManagerService) {
-        this.jWtManagerService = jWtManagerService;
-    }
-*/
+    /* UsersController(JWtManagerService jWtManagerService) {
+         this.jWtManagerService = jWtManagerService;
+     }
+ */
     @GetMapping("/ping")
 
     public String ping(

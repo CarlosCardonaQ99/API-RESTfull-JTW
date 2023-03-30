@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -15,4 +16,5 @@ public class Rol {
     private String id;
     @Column(length = 50)
     private String nombre;
+
 }
