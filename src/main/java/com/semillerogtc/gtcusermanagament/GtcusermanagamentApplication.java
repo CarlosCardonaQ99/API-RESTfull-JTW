@@ -3,7 +3,7 @@ package com.semillerogtc.gtcusermanagament;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.semillerogtc.gtcusermanagament.app")
 public class GtcusermanagamentApplication {
 
 	public static void main(String[] args) {
