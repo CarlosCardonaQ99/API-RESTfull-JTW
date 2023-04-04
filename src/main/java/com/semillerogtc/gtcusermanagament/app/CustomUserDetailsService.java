@@ -1,46 +1,36 @@
 package com.semillerogtc.gtcusermanagament.app;
 
+import com.semillerogtc.gtcusermanagament.domain.Rol;
+import com.semillerogtc.gtcusermanagament.domain.RolesRepositorio;
+import com.semillerogtc.gtcusermanagament.domain.Usuario;
+import com.semillerogtc.gtcusermanagament.domain.UsuariosRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private RolesRepositorio rolesRepositorio;
 
-    public CustomUserDetailsService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+    private UsuariosRepositorio usuariosRepositorio;
+
+    public CustomUserDetailsService(UsuariosRepositorio usuariosRepositorio) {
+        this.usuariosRepositorio = usuariosRepositorio;
     }
+
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if ("carlos".equals(username)) {
-            String encodedPassword = passwordEncoder.encode("admin");
-            return User.builder()
-                    .username("carlos")
-                    .password(encodedPassword)
-                    .roles("USER")
-                    .build();
-        } else {
-            throw new UsernameNotFoundException("Usuario no encontrado: " + username);
-        }
-    }
-
-    public boolean authenticate(String username, String password) {
-        if ("carlos".equals(username) && "admin".equals(password)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-
-
-   /* @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         Usuario usuario = usuariosRepositorio.findByName(name).orElseThrow(
                 () -> new UsernameNotFoundException("Usuario no encontrado con este nombre: " + name));
@@ -51,10 +41,4 @@ public class CustomUserDetailsService implements UserDetailsService {
     private Collection<? extends GrantedAuthority> mapRoles(Set<Rol> roles) {
         return roles.stream().map(rol -> new SimpleGrantedAuthority(rol.getNombre())).collect(Collectors.toList());
     }
-    */
-  /*  private Collection<? extends GrantedAuthority> mapearRoles(Set<Rol> roles){
-        return roles.stream()
-                .map(rol -> new SimpleGrantedAuthority(rol.getNombre()))
-                .collect(Collectors.toList());
-    }*/
-
+}
