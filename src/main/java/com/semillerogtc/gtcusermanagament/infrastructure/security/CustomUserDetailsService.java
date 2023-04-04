@@ -1,4 +1,4 @@
-package com.semillerogtc.gtcusermanagament.app;
+package com.semillerogtc.gtcusermanagament.infrastructure.security;
 
 import com.semillerogtc.gtcusermanagament.domain.Rol;
 import com.semillerogtc.gtcusermanagament.domain.RolesRepositorio;

@@ -1,6 +1,8 @@
 package com.semillerogtc.gtcusermanagament.infrastructure.controllers;
 
 import com.semillerogtc.gtcusermanagament.domain.*;
+import com.semillerogtc.gtcusermanagament.infrastructure.security.JWTAuthResponseDTO;
+import com.semillerogtc.gtcusermanagament.infrastructure.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,14 +38,19 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @PostMapping("/login")
-    public ResponseEntity<String> autenticarUsuario(@RequestBody LoginDTO loginDTO) {
-        Authentication authentication = authenticationManager.authenticate
-                (new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
-                        loginDTO.getPassword()));
+    public ResponseEntity<JWTAuthResponseDTO> autenticarUsuario(@RequestBody LoginDTO loginDTO) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("Inicio de sesión satisfactorio ", HttpStatus.OK);
+
+        //get token from jwtTokenProvider
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        return ResponseEntity.ok(new JWTAuthResponseDTO(token));
     }
 
     @PostMapping("/register")

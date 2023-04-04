@@ -2,6 +2,7 @@ package com.semillerogtc.gtcusermanagament.infrastructure.controllers;
 
 import com.semillerogtc.gtcusermanagament.aplication.services.UsersService;
 import com.semillerogtc.gtcusermanagament.domain.UsuarioNuevoDto;
+import com.semillerogtc.gtcusermanagament.domain.UsuariosRepositorio;
 import com.semillerogtc.gtcusermanagament.infrastructure.environment.EnvironmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,9 @@ import javax.validation.Valid;
 public class UsersController {
     @Autowired
     UsersService _user;
+
+    @Autowired
+    private UsuariosRepositorio usuariosRepositorio;
 
     EnvironmentService _environmentService1;
     // JWtManagerService jWtManagerService;
