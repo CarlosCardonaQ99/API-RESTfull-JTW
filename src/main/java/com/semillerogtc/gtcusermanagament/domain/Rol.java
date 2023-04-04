@@ -16,5 +16,4 @@ public class Rol {
     private String id;
     @Column(length = 50)
     private String nombre;
-
 }

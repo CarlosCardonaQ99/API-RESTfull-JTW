@@ -1,11 +1,13 @@
 package com.semillerogtc.gtcusermanagament.domain;
 
 import lombok.Builder;
+import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Builder
+@Data
 public class UsuarioNuevoDto {
     @NotEmpty(message = "Nombre es obligatorio")
     public String nombre;
