@@ -2,9 +2,15 @@ package com.semillerogtc.gtcusermanagament.aplication.services;
 
 
 import com.semillerogtc.gtcusermanagament.domain.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -12,14 +18,24 @@ public class UsersService {
 
     UsuariosRepositorio usuariosRepositorio;
 
+    RolesRepositorio rolesRepositorio;
 
+   /* @Autowired
+    PasswordEncoder passwordEncoder;
+*/
     UsersService(
-            UsuariosRepositorio usuariosRepositorio) {
+            UsuariosRepositorio usuariosRepositorio,
+            RolesRepositorio rolesRepositorio) {
         this.usuariosRepositorio = usuariosRepositorio;
+        this.rolesRepositorio = rolesRepositorio;
+
     }
 
     public Usuario registrarUsuario(UsuarioNuevoDto usuarioNuevoDto) {
-        var pass = this.generarPassword();
+
+      /* if (usuariosRepositorio.existsByEmail(usuarioNuevoDto.email)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El correo ya está registrado");
+        }*/
         Usuario usuarioNuevo = new Usuario();
         usuarioNuevo.setName(usuarioNuevoDto.nombre);
         usuarioNuevo.setEmail(new Email(usuarioNuevoDto.email));
@@ -32,17 +48,19 @@ public class UsersService {
         telefonosSet.add(usuarioTelefono);
 
         usuarioNuevo.setTelefonos(telefonosSet);
+        Rol rol = rolesRepositorio.findByNombre("ROLE_ADMIN").orElseThrow(
+                () -> new UsernameNotFoundException("Rol no encontrado con este nombre: " + "ROLE_ADMIN"));
+        rol.setNombre("ROLE_ADMIN");
+
+        usuarioNuevo.setRol(rol);
 
         var userRegistrado = this.usuariosRepositorio.save(usuarioNuevo);
         return userRegistrado;
     }
 
-    public String generarPassword() {
-        return "clavesegura";
-    }
 
-    public void elinminarUsuario(String userId) {
-        this.usuariosRepositorio.deleteById(userId);
+    public List<Usuario> consultarTodosLosUsuarios() {
+        return this.usuariosRepositorio.findAll();
     }
 
     public Usuario consultarUsuarioXEmail(String email) {
@@ -55,5 +73,9 @@ public class UsersService {
         usuario1.setEmail(new Email(usuarioNuevoDto.email));
         usuario1.setPassword(usuarioNuevoDto.password);
         usuariosRepositorio.save(usuario1);
+    }
+
+    public void elinminarUsuario(String userId) {
+        this.usuariosRepositorio.deleteById(userId);
     }
 }

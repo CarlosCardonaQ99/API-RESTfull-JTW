@@ -33,14 +33,11 @@ public class UsersController {
          this.jWtManagerService = jWtManagerService;
      }
  */
-    @GetMapping("/ping")
 
-    public String ping(
-            @RequestHeader("Environment") String token
-    ) {
-
-        logger.info(token);
-        return "Hola desde controlador usuarios";
+    @GetMapping("/all")
+    public ResponseEntity consultarTodosLosUsuarios(){
+        var usuarios = _user.consultarTodosLosUsuarios();
+        return new ResponseEntity(usuarios, HttpStatus.OK);
     }
 
     @GetMapping("/{email}")

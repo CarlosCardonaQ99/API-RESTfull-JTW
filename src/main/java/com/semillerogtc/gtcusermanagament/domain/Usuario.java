@@ -30,4 +30,6 @@ public class Usuario {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "rol_id")
     private Rol rol;
+
+
 }

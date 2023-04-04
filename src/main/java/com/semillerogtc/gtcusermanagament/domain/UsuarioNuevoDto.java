@@ -2,6 +2,7 @@ package com.semillerogtc.gtcusermanagament.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
