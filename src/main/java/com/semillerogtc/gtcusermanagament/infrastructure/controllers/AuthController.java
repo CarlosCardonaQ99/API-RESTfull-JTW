@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -47,7 +44,6 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        //get token from jwtTokenProvider
         String token = jwtTokenProvider.generateToken(authentication);
 
         return ResponseEntity.ok(new JWTAuthResponseDTO(token));
@@ -73,7 +69,7 @@ public class AuthController {
         usuarioNuevo.setTelefonos(telefonosSet);
 
         Rol rol = rolesRepositorio.findByNombre("ROLE_ADMIN").orElseThrow(
-                () -> new UsernameNotFoundException("Role no encontrado con este nombre: " + "ROLE_ADMIN"));
+                () -> new UsernameNotFoundException("Rol no encontrado con este nombre: " + "ROLE_ADMIN"));
         rol.setNombre("ROLE_ADMIN");
 
         usuarioNuevo.setRol(rol);

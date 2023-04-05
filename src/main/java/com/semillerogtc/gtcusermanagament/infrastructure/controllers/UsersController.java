@@ -32,44 +32,41 @@ public class UsersController {
 
     public final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
-    /* UsersController(JWtManagerService jWtManagerService) {
-         this.jWtManagerService = jWtManagerService;
-     }
- */
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
     public ResponseEntity consultarTodosLosUsuarios(){
         var usuarios = _user.consultarTodosLosUsuarios();
         return new ResponseEntity(usuarios, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{email}")
     public ResponseEntity consultarUsuarioPorEmail(@PathVariable("email") String email) {
         var usuario = _user.consultarUsuarioXEmail(email);
         return new ResponseEntity(usuario, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/headers")
     public ResponseEntity consultarUsuarioPorHeader(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestHeader("") String userId) {
         logger.info(token + "- " + userId);
         UsuarioNuevoDto user = UsuarioNuevoDto.builder().email("Jeffrey").build();
         return new ResponseEntity(_user.registrarUsuario(user), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/query")
     public ResponseEntity consultarUsuarioPorQueryString(@RequestParam String email) {
         logger.info(email);
         UsuarioNuevoDto user = UsuarioNuevoDto.builder().email("Jeffrey").build();
         return new ResponseEntity(_user.registrarUsuario(user), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/uritemplate/{email}/{id}")
     public ResponseEntity consultarUsuarioPorPathOUriTemplate(@PathVariable("email") String email, @PathVariable("id") String userId) {
         logger.info(email + "- " + userId);
         UsuarioNuevoDto user = UsuarioNuevoDto.builder().email("Jeffrey").build();
         return new ResponseEntity(_user.registrarUsuario(user), HttpStatus.OK);
     }
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/v1")
     public ResponseEntity registrarUsuario(@Valid @RequestBody UsuarioNuevoDto usuarioDto) {
         logger.info(usuarioDto.email);
@@ -95,27 +92,7 @@ public class UsersController {
 
         return new ResponseEntity(usuarioRegistrado, HttpStatus.CREATED);
     }
-
- /*   @PostMapping("/login")
-    public ResponseEntity login() {
-        return new ResponseEntity(this.jWtManagerService.generate(), HttpStatus.OK);
-    }
-
-    @PostMapping("/auth")
-    public ResponseEntity auth(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        try {
-            var jwt = this.jWtManagerService.validate(token);
-            return new ResponseEntity(jwt.toString(), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity("Token expirado o no válido", HttpStatus.UNAUTHORIZED);
-        }
-    }*/
-
-    /*   @PatchMapping("/{id}")
-       public ResponseEntity actualizarUsuario(@RequestBody UsuarioNuevoDto usuarioDto) {
-           UsuarioNuevoDto user = UsuarioNuevoDto.builder().email("Jeffrey").build();
-           return new ResponseEntity(_user.registrarUsuario(user), HttpStatus.OK);
-       }*/
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/update/{userId}")
     public ResponseEntity actualizarUsuario(@RequestBody UsuarioNuevoDto usuarioNuevoDto,
                                             @PathVariable("userId") String userId) {
@@ -126,7 +103,7 @@ public class UsersController {
             return new ResponseEntity(ex.getMessage(), HttpStatus.NO_CONTENT);
         }
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity eliminarUsuario(@PathVariable String id) {
         try {

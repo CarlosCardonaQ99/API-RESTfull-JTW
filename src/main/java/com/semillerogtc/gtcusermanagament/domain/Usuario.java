@@ -2,6 +2,8 @@ package com.semillerogtc.gtcusermanagament.domain;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -18,6 +20,7 @@ public class Usuario {
     @NotEmpty(message = "El nombre es obligatorio")
     private String name;
     @NotEmpty(message = "La contraseña es obligatoria")
+    @Length(min = 6, max = 8, message = "El password debe tener entre 6 y 8 caracteres")
     private String password;
     @Convert(converter = EmailAttributeConverter.class)
     @Column(nullable = false, unique = true)
