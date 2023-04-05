@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -32,10 +33,14 @@ public class UsersService {
     }
 
     public Usuario registrarUsuario(UsuarioNuevoDto usuarioNuevoDto) {
-
-      /* if (usuariosRepositorio.existsByEmail(usuarioNuevoDto.email)) {
+        // Verificar si el correo ya está registrado
+        Optional<Usuario> usuarioExistente = usuariosRepositorio.findByEmail(new Email(usuarioNuevoDto.email));
+        if (usuarioExistente.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El correo ya está registrado");
-        }*/
+        }
+
+
+
         Usuario usuarioNuevo = new Usuario();
         usuarioNuevo.setName(usuarioNuevoDto.nombre);
         usuarioNuevo.setEmail(new Email(usuarioNuevoDto.email));
@@ -63,9 +68,10 @@ public class UsersService {
         return this.usuariosRepositorio.findAll();
     }
 
-    public Usuario consultarUsuarioXEmail(String email) {
+    public Optional<Usuario> consultarUsuarioXEmail(String email) {
         return this.usuariosRepositorio.findByEmail(new Email(email));
     }
+
 
     public void actualizarUsuario(String userId, UsuarioNuevoDto usuarioNuevoDto) {
         Usuario usuario1 = this.usuariosRepositorio.findById(userId).orElseThrow(

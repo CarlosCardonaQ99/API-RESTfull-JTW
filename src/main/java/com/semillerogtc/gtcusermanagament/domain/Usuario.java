@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name="usuarios")
+@Table(name="usuarios", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 public class Usuario {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -20,6 +20,7 @@ public class Usuario {
     @NotEmpty(message = "La contraseña es obligatoria")
     private String password;
     @Convert(converter = EmailAttributeConverter.class)
+    @Column(nullable = false, unique = true)
     private Email email;
     private Integer edad;
 

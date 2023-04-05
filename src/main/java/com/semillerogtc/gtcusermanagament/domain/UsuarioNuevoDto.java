@@ -2,8 +2,9 @@ package com.semillerogtc.gtcusermanagament.domain;
 
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.validator.constraints.UniqueElements;
 
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class UsuarioNuevoDto {
     @NotEmpty(message = "Nombre es obligatorio")
     public String nombre;
+    @Email (message = "El correo electrónico no es válido")
     @NotEmpty(message = "Email es obligatorio")
     public String email;
     @NotEmpty(message = "La contraseña es obligatoria")

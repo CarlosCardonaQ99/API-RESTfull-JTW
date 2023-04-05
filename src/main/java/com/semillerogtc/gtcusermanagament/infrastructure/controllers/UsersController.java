@@ -1,6 +1,7 @@
 package com.semillerogtc.gtcusermanagament.infrastructure.controllers;
 
 import com.semillerogtc.gtcusermanagament.aplication.services.UsersService;
+import com.semillerogtc.gtcusermanagament.domain.RespuestaRegistroDto;
 import com.semillerogtc.gtcusermanagament.domain.UsuarioNuevoDto;
 import com.semillerogtc.gtcusermanagament.domain.UsuariosRepositorio;
 import com.semillerogtc.gtcusermanagament.infrastructure.environment.EnvironmentService;
@@ -14,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -71,8 +74,19 @@ public class UsersController {
     public ResponseEntity registrarUsuario(@Valid @RequestBody UsuarioNuevoDto usuarioDto) {
         logger.info(usuarioDto.email);
         var usuarioRegistrado = _user.registrarUsuario(usuarioDto);
+        RespuestaRegistroDto respuesta = new RespuestaRegistroDto(
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                LocalDateTime.now()
 
-        return new ResponseEntity(usuarioRegistrado, HttpStatus.CREATED);
+
+        );
+        respuesta.setCreado(LocalDateTime.now());
+        respuesta.setModificado(LocalDateTime.now());
+        respuesta.setUltimoAcceso(LocalDateTime.now());
+
+
+        return new ResponseEntity<>(respuesta , HttpStatus.CREATED);
     }
 
     @PostMapping("/v2")
