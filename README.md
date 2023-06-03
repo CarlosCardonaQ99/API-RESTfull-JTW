@@ -7,7 +7,7 @@ Después de compilar la API, abrir la consola de h2 mediante la ruta: http://loc
 
  Usuario y contraseña: h2
 
-Dentro de la consola, ejecutar estos scripts para poder inicializar correctamente la aplicación con sus roles:
+Una vez dentro de la consola, ejecutar estos scripts para poder inicializar correctamente la aplicación con sus roles:
 
 INSERT INTO rol (id, nombre) VALUES (1, 'ROLE_ADMIN');
 
